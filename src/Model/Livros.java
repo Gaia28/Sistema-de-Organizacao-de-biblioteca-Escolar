@@ -3,13 +3,13 @@ package Model;
 
 public class Livros {
     
-    private String ISBN;
+    private int ISBN;
     private String titulo;
     private String genero;
     private String autor;
     private boolean disponivel;
     
-    public Livros(String ISBN, String titulo, String genero, String autor) {
+    public Livros(int ISBN, String titulo, String genero, String autor) {
         this.ISBN = ISBN;
         this.titulo = titulo;
         this.genero = genero;
@@ -17,11 +17,11 @@ public class Livros {
         this.disponivel = true;
     }
 
-    public String getISBN() {
+    public int getISBN() {
         return ISBN;
     }
 
-    public void setISBN(String ISBN) {
+    public void setISBN(int ISBN) {
         this.ISBN = ISBN;
     }
 
