@@ -1,6 +1,8 @@
 
 package View;
 
+import Controller.ConexaoSQLite;
+import java.sql.Connection;
 
 public class TelaInicial extends javax.swing.JFrame {
 
@@ -8,7 +10,7 @@ public class TelaInicial extends javax.swing.JFrame {
     public TelaInicial() {
         initComponents();
         
-        //Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+        Connection connection = ConexaoSQLite.getInstance().abrirConexao();
     }
 
    
