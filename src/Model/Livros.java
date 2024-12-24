@@ -9,7 +9,7 @@ public class Livros {
     private String autor;
     private boolean disponivel;
     
-    public Livros(String ISBN, String titulo, String genero, String autor) {
+    public Livros(String ISBN, String titulo, String genero, String autor, boolean disponivel) {
         this.ISBN = ISBN;
         this.titulo = titulo;
         this.genero = genero;

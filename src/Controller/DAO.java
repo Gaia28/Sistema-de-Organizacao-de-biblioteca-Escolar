@@ -3,15 +3,20 @@ package Controller;
 
 import Model.Livros;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import java.util.List;
+
 
 public class DAO {
     
 //-----------QUERRYs DO BANCO DE DADOS-------------//    
     
     private static final String CADASTRAR_LIVRO = "INSERT  INTO Livros (ISBN, titulo, genero, autor, disponivel) VALUES(?,?,?,?,?)";
+    private static final String BUSCAR_LIVROS = "SELECT *FROM Livros";
     
     
  //-----------------------------------------------//   
@@ -37,6 +42,31 @@ public class DAO {
         }finally{
             ConexaoSQLite.getInstance().fecharConexao();
         }
+    }
     
+    public List<Livros> BuscarLivros(){
+        List<Livros> livros = new ArrayList<>();
+        Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+    
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(BUSCAR_LIVROS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while(resultSet.next()){
+               
+                String ISBN = resultSet.getString("ISBN");
+                String titulo = resultSet.getString("titulo");
+                String genero = resultSet.getString("genero");
+                String autor = resultSet.getString("autor");
+                boolean disponivel = resultSet.getBoolean("disponivel");
+                
+                Livros livro = new Livros(ISBN, titulo, genero, autor, disponivel);
+                livros.add(livro);
+                
+            }
+            
+        } catch (Exception e) {
+        }
+        return livros;
     }
 }

@@ -146,6 +146,14 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_textFieldAutorActionPerformed
 
+    
+    /*ADICIONAR VERIFICAÇÕES NOS CAMPOS DE TEXTO:
+    SE O TEXTO ESTÁ VAZIO
+    SE O LIVRO JÁ EXISTE NO BANCO DE DADOS
+    SE O ISBN ESTÁ NO PADRÃO CORRETO
+    
+    DEIXAR OS CAMPOS DE TEXTOS EM BRANCO APÓS CONCLUIR
+    */
     private void buttonCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCadastrarActionPerformed
         
         String titulo = textFieldNome.getText().trim();
@@ -154,7 +162,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         String ISBN = textFieldISBN.getText().trim();
         
         
-        Livros livro = new Livros(ISBN, titulo, genero, autor);
+        Livros livro = new Livros(ISBN, titulo, genero, autor, true);
         DAO dao = new DAO();
         dao.CadastrarLivros(livro);
     }//GEN-LAST:event_buttonCadastrarActionPerformed
