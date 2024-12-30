@@ -17,6 +17,7 @@ public class DAO {
     
     private static final String CADASTRAR_LIVRO = "INSERT  INTO Livros (ISBN, titulo, genero, autor, disponivel) VALUES(?,?,?,?,?)";
     private static final String BUSCAR_LIVROS = "SELECT *FROM Livros";
+    private static final String VERIFICAR_LIVRO = "SELECT *FROM Livros WHERE ISBN = ?";
     
     
  //-----------------------------------------------//   
@@ -69,4 +70,35 @@ public class DAO {
         }
         return livros;
     }
+    
+    public Livros VerificarLivros(String ISBN, String Titulo){
+        
+     Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+     Livros livro = null;
+     
+        try {
+         PreparedStatement preparedStatement = connection.prepareStatement(VERIFICAR_LIVRO);
+
+        preparedStatement.setString(1, ISBN);
+
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) { 
+                livro = new Livros(
+                        resultSet.getString("ISBN"),
+                        resultSet.getString("titulo"),
+                        resultSet.getString("genero"),
+                        resultSet.getString("autor"),
+                        resultSet.getBoolean("disponivel")
+                );
+            }
+        }
+    } catch (SQLException e) {
+        
+        JOptionPane.showMessageDialog(null, "Erro ao verificar livro: " + e.getMessage());
+        e.printStackTrace();
+    }
+
+    return livro;
+}
 }
