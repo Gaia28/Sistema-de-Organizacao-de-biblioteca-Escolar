@@ -226,7 +226,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
             
-        }else if(dao.VerificarLivros(ISBN, titulo) != null){
+        }else if(dao.VerificarLivros(ISBN) == true){
             
             JOptionPane.showMessageDialog(null, "Livro já cadastrado");
             LimparCamposTexto();

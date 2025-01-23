@@ -1,6 +1,12 @@
 
 package View;
 
+import Controller.DAO;
+import Model.Alunos;
+import Model.Emprestimos;
+import Model.Livros;
+import javax.swing.JOptionPane;
+
 
 public class TelaCadastroEmprestimos extends javax.swing.JFrame {
 
@@ -21,7 +27,7 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         textFieldTitulo = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        teextFieldIsbn = new javax.swing.JTextField();
+        textFieldIsbn = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         calendarioInicial = new org.jdesktop.swingx.JXDatePicker();
         jLabel5 = new javax.swing.JLabel();
@@ -60,9 +66,9 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Título");
 
-        teextFieldIsbn.setBackground(new java.awt.Color(255, 255, 255));
-        teextFieldIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        teextFieldIsbn.setForeground(new java.awt.Color(51, 51, 51));
+        textFieldIsbn.setBackground(new java.awt.Color(255, 255, 255));
+        textFieldIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        textFieldIsbn.setForeground(new java.awt.Color(51, 51, 51));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
@@ -82,6 +88,11 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         botaoConcluir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         botaoConcluir.setForeground(new java.awt.Color(51, 51, 51));
         botaoConcluir.setText("Concluir");
+        botaoConcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoConcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -90,7 +101,7 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(teextFieldIsbn)
+                    .addComponent(textFieldIsbn)
                     .addComponent(textFieldTitulo)
                     .addComponent(textFieldTurma)
                     .addComponent(textFieldAluno)
@@ -133,7 +144,7 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(teextFieldIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textFieldIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,6 +206,86 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         telaPrincipal.setVisible(true);
     }//GEN-LAST:event_menuVoltarMouseClicked
 
+    public void LimparCamposTexto(){
+        textFieldAluno.setText("");
+        textFieldIsbn.setText("");
+        textFieldTurma.setText("");
+        textFieldTitulo.setText("");
+    }
+    
+    /*
+    VERIFICAR SE OS CAMPOS ESTÃO VAZIOS -> OK
+    VERIFICAR SE O LIVRO SOLICITADO FOI INSERIDO NO ACERVO -> OK
+    VERIFICAR SE O LIVRO ESTÁ EMPRESTADO -> OK
+    CADASTRAR ALUNO -> OK
+    CADASTRAR EMPRESTIMO -> OK
+    
+    */
+    private void botaoConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConcluirActionPerformed
+        
+        String nomeAluno = textFieldAluno.getText();
+        String turmaAluno = textFieldTurma.getText();
+        String tituloLivro = textFieldTitulo.getText();
+        String ISBN = textFieldIsbn.getText();
+        DAO dao = new DAO();
+        Livros livro = new Livros(ISBN, ISBN, ISBN, ISBN, true);
+        Alunos aluno = new Alunos(1, nomeAluno, turmaAluno );
+        int alunoID = dao.BuscarIdAluno(nomeAluno, turmaAluno);
+        Emprestimos emprestimo = new Emprestimos(alunoID, ISBN, turmaAluno, tituloLivro, false);
+        
+        if( nomeAluno.isEmpty() || turmaAluno.isEmpty() || tituloLivro.isEmpty() || ISBN.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
+
+        }
+       //se aluno estiver cadastrado:
+        if (alunoID != -1) {
+            
+           JOptionPane.showMessageDialog(null, "aluno cadastrado");
+           boolean emprestimoAtivo = dao.VerificarEmprestimoAluno(alunoID);
+           boolean livroCadastrado = dao.VerificarLivros(ISBN);
+           boolean livroEmprestado = dao.VerificarEmprestimo(ISBN);
+
+            
+           //se o aluno não tiver emprestimos
+           if(emprestimoAtivo == false){
+               JOptionPane.showMessageDialog(null, "aluno não possui emprestimos");
+               
+               //livro cadastrado no acervo
+               if(livroCadastrado == true){
+                JOptionPane.showMessageDialog(null, "livro cadastrado");
+                
+                //livro sem emprestimos registrado
+                if(livroEmprestado == false){
+                    JOptionPane.showMessageDialog(null, "livro não está emprestado");
+                    dao.CadastrarEmprestimo(emprestimo);
+                    
+                //livro já emprestado
+                }else{
+                    JOptionPane.showMessageDialog(null, "Esse livro já possui um empréstimo registrado");
+                     LimparCamposTexto();
+                    }   
+               //livro não está cadastrado no acervo
+               }else{
+                    JOptionPane.showMessageDialog(null, "Esse livro não está cadastrado no acervo. Cadastre-o");
+                     LimparCamposTexto();
+               }
+           //se o aluno tiver emprestimo
+           }else{
+                JOptionPane.showMessageDialog(null, "aluno já possui um emprestimo");
+                 LimparCamposTexto();
+           } 
+           return;
+           //aluno não cadastrado
+        }else{
+            JOptionPane.showMessageDialog(null, "Cadastrar aluno");
+            dao.CadastrarAluno(aluno); 
+           
+        
+        }
+        
+        
+    }//GEN-LAST:event_botaoConcluirActionPerformed
+
    
     public static void main(String args[]) {
        
@@ -219,8 +310,8 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JMenu menuVoltar;
-    private javax.swing.JTextField teextFieldIsbn;
     private javax.swing.JTextField textFieldAluno;
+    private javax.swing.JTextField textFieldIsbn;
     private javax.swing.JTextField textFieldTitulo;
     private javax.swing.JTextField textFieldTurma;
     // End of variables declaration//GEN-END:variables

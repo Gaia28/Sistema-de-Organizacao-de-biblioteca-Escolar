@@ -2,12 +2,12 @@
 package Model;
 
 
-public class Usuarios {
+public class Alunos {
     private int id;
     private  String nome;
     private String turma;
 
-    public Usuarios(int id, String nome, String turma) {
+    public Alunos(int id, String nome, String turma) {
         this.id = id;
         this.nome = nome;
         this.turma = turma;
