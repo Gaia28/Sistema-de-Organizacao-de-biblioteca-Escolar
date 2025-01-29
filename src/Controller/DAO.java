@@ -69,11 +69,43 @@ public class DAO {
                 
                 Livros livro = new Livros(ISBN, titulo, genero, autor, disponivel);
                 livros.add(livro);
+              
                 
             }
             
         } catch (Exception e) {
         }finally {
+            ConexaoSQLite.getInstance().fecharConexao();
+        }
+        return livros;
+    }
+    
+    public List<Livros> PesquisarLivrosPorTitulo(String titulo){
+        List<Livros> livros = new ArrayList<>();
+        Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+        
+        try {
+            
+            String SQL = "SELECT *FROM Livros WHERE titulo LIKE ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, "%" + titulo + "%"); // Busca parcial pelo título
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while(resultSet.next()){
+            String ISBN = resultSet.getString("ISBN");
+            String tituloLivro = resultSet.getString("titulo");
+            String genero = resultSet.getString("genero");
+            String autor = resultSet.getString("autor");
+            boolean disponivel = resultSet.getBoolean("disponivel");
+
+            Livros livro = new Livros(ISBN, tituloLivro, genero, autor, disponivel);
+            livros.add(livro);
+                
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
             ConexaoSQLite.getInstance().fecharConexao();
         }
         return livros;
@@ -148,7 +180,7 @@ public class DAO {
         preparedStatement = connection.prepareStatement(CADASTRAR_EMPRESTIMO);
         preparedStatement.setInt(1, emprestimo.getAlunoId());
         preparedStatement.setString(2, emprestimo.getLivroISBN());
-        preparedStatement.setString(3, emprestimo.getDataEmprestimo().toString());
+        preparedStatement.setString(3, emprestimo.getDataEmprestimo());
         preparedStatement.setString(4, emprestimo.getDataDevolucao());
         preparedStatement.setBoolean(5, emprestimo.isDevolvido());
         preparedStatement.executeUpdate();

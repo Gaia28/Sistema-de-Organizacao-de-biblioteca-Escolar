@@ -38,9 +38,10 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(229, 229, 229));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
         jPanel2.setForeground(new java.awt.Color(51, 51, 51));
 
         textFieldISBN.setBackground(new java.awt.Color(255, 255, 255));
@@ -69,7 +70,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
             }
         });
 
-        buttonCadastrar.setBackground(new java.awt.Color(204, 204, 204));
+        buttonCadastrar.setBackground(new java.awt.Color(255, 255, 255));
         buttonCadastrar.setForeground(new java.awt.Color(51, 51, 51));
         buttonCadastrar.setText("Cadastrar");
         buttonCadastrar.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +104,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(282, 282, 282)
-                        .addComponent(buttonCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(buttonCadastrar, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                         .addGap(215, 215, 215))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(42, 42, 42)
@@ -142,7 +143,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
                 .addComponent(textFieldISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(buttonCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -163,6 +164,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         );
 
         jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
+        jMenuBar1.setBorder(null);
 
         menuVoltar.setForeground(new java.awt.Color(51, 51, 51));
         menuVoltar.setText("Voltar");

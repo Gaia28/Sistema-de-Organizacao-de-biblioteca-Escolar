@@ -5,6 +5,7 @@ import Controller.DAO;
 import Model.Alunos;
 import Model.Emprestimos;
 import Model.Livros;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 
 
@@ -25,8 +26,6 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         textFieldTurma = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        textFieldTitulo = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         textFieldIsbn = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         calendarioInicial = new org.jdesktop.swingx.JXDatePicker();
@@ -39,9 +38,10 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(229, 229, 229));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         textFieldAluno.setBackground(new java.awt.Color(255, 255, 255));
         textFieldAluno.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -58,13 +58,6 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Turma");
-
-        textFieldTitulo.setBackground(new java.awt.Color(255, 255, 255));
-        textFieldTitulo.setForeground(new java.awt.Color(51, 51, 51));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel3.setText("Título");
 
         textFieldIsbn.setBackground(new java.awt.Color(255, 255, 255));
         textFieldIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -84,7 +77,7 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Data de entrega");
 
-        botaoConcluir.setBackground(new java.awt.Color(204, 204, 204));
+        botaoConcluir.setBackground(new java.awt.Color(255, 255, 255));
         botaoConcluir.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         botaoConcluir.setForeground(new java.awt.Color(51, 51, 51));
         botaoConcluir.setText("Concluir");
@@ -102,13 +95,11 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textFieldIsbn)
-                    .addComponent(textFieldTitulo)
                     .addComponent(textFieldTurma)
                     .addComponent(textFieldAluno)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -133,19 +124,15 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textFieldAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(9, 9, 9)
+                .addGap(41, 41, 41)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textFieldTurma, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(36, 36, 36)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textFieldIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
@@ -153,9 +140,9 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(calendarioInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(calendarioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
+                .addGap(70, 70, 70)
                 .addComponent(botaoConcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -174,6 +161,10 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(50, 50, 50))
         );
+
+        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
+        jMenuBar1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
+        jMenuBar1.setForeground(new java.awt.Color(51, 51, 51));
 
         menuVoltar.setForeground(new java.awt.Color(51, 51, 51));
         menuVoltar.setText("Voltar");
@@ -210,7 +201,8 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         textFieldAluno.setText("");
         textFieldIsbn.setText("");
         textFieldTurma.setText("");
-        textFieldTitulo.setText("");
+        calendarioInicial.setDate(null);
+        calendarioFinal.setDate(null);
     }
     
     /*
@@ -225,27 +217,32 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         
         String nomeAluno = textFieldAluno.getText();
         String turmaAluno = textFieldTurma.getText();
-        String tituloLivro = textFieldTitulo.getText();
         String ISBN = textFieldIsbn.getText();
-        DAO dao = new DAO();
-        Livros livro = new Livros(ISBN, ISBN, ISBN, ISBN, true);
-        Alunos aluno = new Alunos(1, nomeAluno, turmaAluno );
-        int alunoID = dao.BuscarIdAluno(nomeAluno, turmaAluno);
-        Emprestimos emprestimo = new Emprestimos(alunoID, ISBN, turmaAluno, tituloLivro, false);
+        java.util.Date dataEmprestimoUtil = calendarioInicial.getDate();
+        java.util.Date dataEntregaUtil = calendarioFinal.getDate();
         
-        if( nomeAluno.isEmpty() || turmaAluno.isEmpty() || tituloLivro.isEmpty() || ISBN.isEmpty()){
+        DAO dao = new DAO();
+        Alunos aluno = new Alunos(0, nomeAluno, turmaAluno );
+        int alunoID = dao.BuscarIdAluno(nomeAluno, turmaAluno);
+        
+        if( nomeAluno.isEmpty() || turmaAluno.isEmpty() || ISBN.isEmpty() || dataEmprestimoUtil == null || dataEntregaUtil == null){
             JOptionPane.showMessageDialog(null, "Preencha todos os campos!");
 
         }
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dataEmprestimo = dateFormat.format(dataEmprestimoUtil);
+        String dataEntrega = dateFormat.format(dataEntregaUtil);
        //se aluno estiver cadastrado:
-        if (alunoID != -1) {
+        if (alunoID == -1) {
             
-           JOptionPane.showMessageDialog(null, "aluno cadastrado");
+           JOptionPane.showMessageDialog(null, "Aluno não cadastrado. Confirme para cadastrar");
+           dao.CadastrarAluno(aluno);
+           alunoID = dao.BuscarIdAluno(nomeAluno, turmaAluno);
+        }
            boolean emprestimoAtivo = dao.VerificarEmprestimoAluno(alunoID);
            boolean livroCadastrado = dao.VerificarLivros(ISBN);
            boolean livroEmprestado = dao.VerificarEmprestimo(ISBN);
-
-            
            //se o aluno não tiver emprestimos
            if(emprestimoAtivo == false){
                JOptionPane.showMessageDialog(null, "aluno não possui emprestimos");
@@ -254,10 +251,13 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
                if(livroCadastrado == true){
                 JOptionPane.showMessageDialog(null, "livro cadastrado");
                 
+                Emprestimos emprestimo = new Emprestimos(alunoID, ISBN, dataEmprestimo, dataEntrega, false);
+
                 //livro sem emprestimos registrado
                 if(livroEmprestado == false){
                     JOptionPane.showMessageDialog(null, "livro não está emprestado");
                     dao.CadastrarEmprestimo(emprestimo);
+                    LimparCamposTexto();
                     
                 //livro já emprestado
                 }else{
@@ -276,14 +276,8 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
            } 
            return;
            //aluno não cadastrado
-        }else{
-            JOptionPane.showMessageDialog(null, "Cadastrar aluno");
-            dao.CadastrarAluno(aluno); 
-           
         
-        }
-        
-        
+ 
     }//GEN-LAST:event_botaoConcluirActionPerformed
 
    
@@ -302,7 +296,6 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXDatePicker calendarioInicial;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -312,7 +305,6 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
     private javax.swing.JMenu menuVoltar;
     private javax.swing.JTextField textFieldAluno;
     private javax.swing.JTextField textFieldIsbn;
-    private javax.swing.JTextField textFieldTitulo;
     private javax.swing.JTextField textFieldTurma;
     // End of variables declaration//GEN-END:variables
 }
