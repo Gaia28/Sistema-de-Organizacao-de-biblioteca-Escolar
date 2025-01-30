@@ -4,6 +4,7 @@ package Controller;
 import Model.Alunos;
 import Model.Emprestimos;
 import Model.Livros;
+import View.TelaDeAcervo;
 import View.TelaPrincipal;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -193,8 +194,8 @@ public class DAO {
        
 
         connection.commit(); // Finaliza a transação
-        TelaPrincipal telaPrincipal = new TelaPrincipal();
-        telaPrincipal.InserirLivrosTabela();
+        TelaDeAcervo telaDeAcervo = new TelaDeAcervo();
+        telaDeAcervo.InserirLivrosTabela();
         JOptionPane.showMessageDialog(null, "Empréstimo realizado com sucesso!");
     } catch (SQLException e) {
         try {

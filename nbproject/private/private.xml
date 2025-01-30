@@ -5,7 +5,7 @@
             <url>src/View/TelaPrincipal.java</url>
             <bookmark id="1">
                 <name/>
-                <line>237</line>
+                <line>174</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,6 +14,8 @@
         <group>
             <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/Controller/DAO.java</file>
             <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/View/TelaEmprestimos.java</file>
+            <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/View/TelaDeAcervo.java</file>
+            <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/View/TelaDevolucao.java</file>
             <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/View/TelaPrincipal.java</file>
             <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/View/TelaCadastroEmprestimos.java</file>
             <file>file:/C:/Users/mathe/OneDrive/Documentos/NetBeansProjects/SIGB/src/View/TelaCadastroLivros.java</file>
