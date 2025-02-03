@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import java.util.List;
 
@@ -26,7 +27,27 @@ public class DAO {
     private static final String VERIFICAR_LIVRO = "SELECT 1 FROM Livros WHERE ISBN = ?";
     private static final String VERIFICAR_EMPRESTIMO = "SELECT 1 FROM Emprestimos WHERE LivroISBN = ?";
     private static final String VERIFICAR_EMPRESTIMO_ALUNO = "SELECT 1 FROM Emprestimos WHERE alunoId = ? AND devolvido = false";
- //-----------------------------------------------//  
+    
+    private static final String BUSCAR_EMPRESTIMOS = 
+     "SELECT e.id AS emprestimo_id, a.nome AS aluno_nome, a.turma AS aluno_turma, " +
+        "l.ISBN AS livroISBN, l.titulo AS livro_titulo, e.dataEmprestimo, e.dataDevolucao, e.devolvido " +
+        "FROM Emprestimos e " +
+        "JOIN Alunos a ON e.alunoId = a.aluno_id " +
+        "JOIN Livros l ON e.livroISBN = l.ISBN";
+    
+    private static final String EXCLUIR_LIVRO = "DELETE FROM Livros WHERE ISBN = ?";
+    
+    private static final String EXCLUIR_EMPRESTIMO = "DELETE FROM Emprestimos "
+                             + "WHERE alunoId = (SELECT aluno_id FROM Alunos WHERE nome = ? AND turma = ?) "
+                             + "AND livroISBN = ?";
+    
+    private static final String INSERIR_NO_HISTORICO = "INSERT INTO HistoricoEmprestimos (alunoId, livroISBN, dataEmprestimo, dataDevolucao) "
+                              + "SELECT e.alunoId, e.livroISBN, e.dataEmprestimo, DATE('now') "
+                              + "FROM Emprestimos e "
+                              + "JOIN Alunos a ON e.alunoId = a.aluno_id "
+                              + "WHERE a.nome = ? AND a.turma = ? AND e.livroISBN = ?";
+
+//-----------------------------------------------//  
 
     
     
@@ -87,7 +108,7 @@ public class DAO {
         
         try {
             
-            String SQL = "SELECT *FROM Livros WHERE titulo LIKE ?";
+            String SQL = "SELECT *FROM Livros WHERE titulo LIKE ? ";
             PreparedStatement preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, "%" + titulo + "%"); // Busca parcial pelo título
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -285,5 +306,133 @@ public class DAO {
     }
     return possuiEmprestimos;
 }
+  
+  public List<EmprestimoDTO> buscarEmprestimos(){
+      List<EmprestimoDTO> emprestimos = new ArrayList<>();
+      Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+      
+      try {
+          PreparedStatement preparedStatement = connection.prepareStatement(BUSCAR_EMPRESTIMOS);
+          ResultSet resultSet = preparedStatement.executeQuery();
+          
+          while(resultSet.next()){
+          
+            int id = resultSet.getInt("emprestimo_id");
+            String alunoNome = resultSet.getString("aluno_nome");
+            String alunoTurma = resultSet.getString("aluno_turma");
+            String livroTitulo = resultSet.getString("livro_titulo");
+            String ISBNLivro = resultSet.getString("livroISBN");
+            String dataEmprestimo = resultSet.getString("dataEmprestimo");
+            String dataDevolucao = resultSet.getString("dataDevolucao");
+            boolean devolvido = resultSet.getBoolean("devolvido");
+            
+            EmprestimoDTO emprestimo = new EmprestimoDTO(id, alunoNome, alunoTurma, livroTitulo,ISBNLivro , dataEmprestimo, dataDevolucao, devolvido);
+            emprestimos.add(emprestimo);
+          }
+          
+      } catch (Exception e) {
+          e.printStackTrace();
+      }finally{
+          ConexaoSQLite.getInstance().fecharConexao();
+      }
+        return emprestimos;
+  }
+  
+  public boolean ExcluirLivro(String ISBN){
+  
+      Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+      
+      try {
+          DAO dao = new DAO();
+          
+          if(dao.VerificarEmprestimo(ISBN) == true){
+            JOptionPane.showMessageDialog(null, "O livro não pode ser excluído pois está emprestado.");
+            return  false;
+
+          }
+          
+           int confirmacao = JOptionPane.showConfirmDialog(
+            null, 
+            "Você deseja realmente excluir este livro?", 
+            "Confirmação", 
+            JOptionPane.YES_NO_OPTION
+            );
+
+            // Se o usuário clicar em "Não", cancela a exclusão
+            if (confirmacao != JOptionPane.YES_OPTION) {
+            return false;
+            }
+              PreparedStatement preparedStatement = connection.prepareStatement(EXCLUIR_LIVRO);
+                preparedStatement.setString(1, ISBN);
+                
+                int linhasAfetadas = preparedStatement.executeUpdate();
+                
+            if (linhasAfetadas > 0) {
+            JOptionPane.showMessageDialog(null, "Livro excluído com sucesso!");
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "Livro não encontrado.");
+            return false;
+        }
+          
+          
+      } catch (Exception e) {
+          e.printStackTrace();
+           JOptionPane.showMessageDialog(null, "Erro ao excluir o livro.");
+            return false;
+      }finally{
+          ConexaoSQLite.getInstance().fecharConexao();
+      }
+       
+  }
+  
+  public boolean RegistrarDevolucao(String nomeAluno, String turma, String isbn){
+      Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+      
+       String atualizarDisponibilidade = "UPDATE Livros SET disponivel = 1 WHERE ISBN = ?";
+      
+      try {
+          
+          PreparedStatement preparedStatementInserir = connection.prepareStatement(INSERIR_NO_HISTORICO);
+          
+          preparedStatementInserir.setString(1, nomeAluno);
+          preparedStatementInserir.setString(2, turma);
+          preparedStatementInserir.setString(3, isbn);
+          
+          int HistoricoInserido = preparedStatementInserir.executeUpdate();
+          
+          if(HistoricoInserido > 0){
+              
+              PreparedStatement preparedStatementExcluir = connection.prepareStatement(EXCLUIR_EMPRESTIMO);
+                preparedStatementExcluir.setString(1, nomeAluno);
+                preparedStatementExcluir.setString(2, turma);
+                preparedStatementExcluir.setString(3, isbn);
+                preparedStatementExcluir.executeUpdate();
+                
+                PreparedStatement preparedStatementAtualizarLivro = connection.prepareStatement(atualizarDisponibilidade);
+                preparedStatementAtualizarLivro.setString(1, isbn);
+                preparedStatementAtualizarLivro.executeUpdate();
+                
+                
+                JOptionPane.showMessageDialog(null, "Devolução registrada com sucesso!");
+                return true;
+                
+                
+          }else {
+            JOptionPane.showMessageDialog(null, "Nenhum empréstimo correspondente encontrado.");
+            return false;
+        }
+          
+      } catch (Exception e) {
+          
+          e.printStackTrace();
+          JOptionPane.showMessageDialog(null, "Erro ao registrar devolução");
+          return false;
+          
+      }finally{
+          ConexaoSQLite.getInstance().fecharConexao();
+      }
+  
+  }
 
 }
