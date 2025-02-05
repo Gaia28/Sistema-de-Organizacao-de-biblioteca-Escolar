@@ -36,6 +36,9 @@ public class TelaDeExclusao extends javax.swing.JInternalFrame {
 
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 2, true));
         setClosable(true);
+        setTitle("Excluir Livro");
+        setFocusable(false);
+        setFrameIcon(null);
 
         jPanel1.setBackground(new java.awt.Color(224, 238, 248));
 

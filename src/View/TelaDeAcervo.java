@@ -80,6 +80,7 @@ public class TelaDeAcervo extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuVoltar = new javax.swing.JMenu();
 
@@ -172,6 +173,11 @@ public class TelaDeAcervo extends javax.swing.JFrame {
         campoDeBusca.setOuterMargin(new java.awt.Insets(0, 1, 0, 1));
         campoDeBusca.setPrompt("Buscar livro");
         campoDeBusca.setPromptForeground(new java.awt.Color(51, 51, 51));
+        campoDeBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoDeBuscaActionPerformed(evt);
+            }
+        });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/lixeira.png"))); // NOI18N
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -187,6 +193,11 @@ public class TelaDeAcervo extends javax.swing.JFrame {
                 jLabel5MouseClicked(evt);
             }
         });
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(40, 93, 164));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Acervo");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -205,18 +216,20 @@ public class TelaDeAcervo extends javax.swing.JFrame {
                         .addComponent(campoDeBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE))
                 .addGap(17, 17, 17))
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addComponent(jLabel6)
+                .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(campoDeBusca, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
         );
 
@@ -286,9 +299,19 @@ public class TelaDeAcervo extends javax.swing.JFrame {
      TelaDeEdicao telaDeEdicao = new TelaDeEdicao();
      jDesktopPane1.add(telaDeEdicao);
      telaDeEdicao.setVisible(true);
+        centralizarEdicao(telaDeEdicao, this);
      
     }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void campoDeBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDeBuscaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoDeBuscaActionPerformed
     public void centralizarInternalFrame(TelaDeExclusao frame, TelaDeAcervo desktopPane) {
+        int x = (desktopPane.getWidth() - frame.getWidth()) / 2;
+        int y = (desktopPane.getHeight() - frame.getHeight()) / 2;
+        frame.setLocation(x, y);
+    }
+     public void centralizarEdicao(TelaDeEdicao frame, TelaDeAcervo desktopPane) {
         int x = (desktopPane.getWidth() - frame.getWidth()) / 2;
         int y = (desktopPane.getHeight() - frame.getHeight()) / 2;
         frame.setLocation(x, y);
@@ -355,6 +378,7 @@ public class TelaDeAcervo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

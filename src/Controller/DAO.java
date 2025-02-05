@@ -434,5 +434,95 @@ public class DAO {
       }
   
   }
+  
+  public boolean editarLivro(String isbn, String novoTitulo, String novoAutor) {
+    Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+
+    String sqlSelect = "SELECT titulo, autor FROM Livros WHERE ISBN = ?";
+    String sqlUpdate = "UPDATE Livros SET titulo = ?, autor = ? WHERE ISBN = ?";
+
+    try {
+        PreparedStatement selectStmt = connection.prepareStatement(sqlSelect);
+        selectStmt.setString(1, isbn);
+        ResultSet rs = selectStmt.executeQuery();
+
+        if (!rs.next()) {
+            JOptionPane.showMessageDialog(null, "Livro não encontrado.");
+            return false;
+        }
+
+        // Pegando valores atuais
+        String tituloAtual = rs.getString("titulo");
+        String autorAtual = rs.getString("autor");
+
+        // Se o usuário não informar um novo valor, mantemos o atual
+        String tituloFinal = (novoTitulo == null || novoTitulo.isEmpty()) ? tituloAtual : novoTitulo;
+        String autorFinal = (novoAutor == null || novoAutor.isEmpty()) ? autorAtual : novoAutor;
+
+        // Atualizando no banco
+        PreparedStatement updateStmt = connection.prepareStatement(sqlUpdate);
+        updateStmt.setString(1, tituloFinal);
+        updateStmt.setString(2, autorFinal);
+        updateStmt.setString(3, isbn);
+
+        int linhasAfetadas = updateStmt.executeUpdate();
+        return linhasAfetadas > 0;
+        
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Erro ao atualizar o livro: " + e.getMessage());
+        return false;
+    } finally {
+        ConexaoSQLite.getInstance().fecharConexao();
+    }
+}
+public List<EmprestimoDTO> pesquisarEmprestimosTabela(String pesquisa) {
+    List<EmprestimoDTO> listaEmprestimos = new ArrayList<>();
+    Connection connection = ConexaoSQLite.getInstance().abrirConexao();
+    
+    String sql = "SELECT e.id AS emprestimo_id, a.nome AS aluno_nome, a.turma AS aluno_turma, " +
+                 "l.titulo AS livro_titulo, e.livroISBN, e.dataEmprestimo, e.dataDevolucao, e.devolvido " +
+                 "FROM Emprestimos e " +
+                 "JOIN Alunos a ON e.alunoId = a.aluno_id " +
+                 "JOIN Livros l ON e.livroISBN = l.ISBN " +
+                 "WHERE a.nome LIKE ? OR l.titulo LIKE ? OR e.livroISBN LIKE ? " +
+                 "OR e.dataEmprestimo LIKE ? OR e.dataDevolucao LIKE ?";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        String parametro = "%" + pesquisa + "%"; // Permite buscar qualquer parte dos valores
+        stmt.setString(1, parametro);
+        stmt.setString(2, parametro);
+        stmt.setString(3, parametro);
+        stmt.setString(4, parametro);
+        stmt.setString(5, parametro);
+        
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            EmprestimoDTO emprestimo = new EmprestimoDTO(
+                rs.getInt("emprestimo_id"),
+                rs.getString("aluno_nome"),
+                rs.getString("aluno_turma"),
+                rs.getString("livro_titulo"),
+                rs.getString("livroISBN"),
+                rs.getString("dataEmprestimo"),
+                rs.getString("dataDevolucao"),
+                rs.getBoolean("devolvido")
+            );
+
+            listaEmprestimos.add(emprestimo);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Erro ao buscar empréstimos: " + e.getMessage());
+    } finally {
+        ConexaoSQLite.getInstance().fecharConexao();
+    }
+    
+    return listaEmprestimos;
+}
+
+
+
 
 }

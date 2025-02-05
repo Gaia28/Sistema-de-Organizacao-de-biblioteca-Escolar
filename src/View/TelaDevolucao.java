@@ -155,9 +155,9 @@ public class TelaDevolucao extends javax.swing.JInternalFrame {
         
         if(nome.isEmpty() || turma.isEmpty() || isbn.isEmpty()){
             JOptionPane.showMessageDialog(null, "Preencha todos os campos");
-        }
+        }else{
         DAO dao = new DAO();
-        dao.RegistrarDevolucao(nome, turma, isbn);
+        dao.RegistrarDevolucao(nome, turma, isbn);}
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

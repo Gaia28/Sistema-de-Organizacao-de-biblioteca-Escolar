@@ -4,6 +4,8 @@ import Controller.DAO;
 import Controller.EmprestimoDTO;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -22,6 +24,54 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         initComponents();
         carregarEmprestimosTabela();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        CampoDeBusca.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                buscarEmprestimos();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                buscarEmprestimos();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                buscarEmprestimos();
+            }
+            
+           private void buscarEmprestimos() {
+    String busca = CampoDeBusca.getText(); // Obtendo o texto digitado pelo usuário
+    DAO dao = new DAO();
+    List<EmprestimoDTO> emprestimos;
+
+    if (busca.isEmpty()) {
+        emprestimos = dao.buscarEmprestimos(); // Busca todos os empréstimos
+    } else {
+        emprestimos = dao.pesquisarEmprestimosTabela(busca); // Agora filtra também por data
+    }
+
+    DefaultTableModel modelo = (DefaultTableModel) tabelaEmprestimos.getModel();
+    modelo.setRowCount(0); // Limpa a tabela antes de inserir os novos dados
+
+    for (EmprestimoDTO emprestimo : emprestimos) {
+        modelo.addRow(new Object[]{
+            emprestimo.getId(),
+            emprestimo.getAlunoNome(),
+            emprestimo.getAlunoTurma(),
+            emprestimo.getLivroTitulo(),
+            emprestimo.getLivroISBN(),
+            emprestimo.getDataEmprestimo(),
+            emprestimo.getDataDevolucao(),
+            emprestimo.isDevolvido() ? "Sim" : "Não"
+        });
+    }
+}
+
+
+            
+        });
     }
 
    
@@ -34,7 +84,8 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaEmprestimos = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
-        jXSearchField1 = new org.jdesktop.swingx.JXSearchField();
+        CampoDeBusca = new org.jdesktop.swingx.JXSearchField();
+        jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -80,12 +131,17 @@ public class TelaEmprestimos extends javax.swing.JFrame {
             }
         });
 
-        jXSearchField1.setBackground(new java.awt.Color(255, 255, 255));
-        jXSearchField1.setForeground(new java.awt.Color(51, 51, 51));
-        jXSearchField1.setToolTipText("Buscar");
-        jXSearchField1.setLayoutStyle(org.jdesktop.swingx.JXSearchField.LayoutStyle.MAC);
-        jXSearchField1.setMargin(new java.awt.Insets(2, 8, 2, 6));
-        jXSearchField1.setPrompt("Buscar empréstimo");
+        CampoDeBusca.setBackground(new java.awt.Color(255, 255, 255));
+        CampoDeBusca.setForeground(new java.awt.Color(51, 51, 51));
+        CampoDeBusca.setToolTipText("Buscar");
+        CampoDeBusca.setLayoutStyle(org.jdesktop.swingx.JXSearchField.LayoutStyle.MAC);
+        CampoDeBusca.setMargin(new java.awt.Insets(2, 8, 2, 6));
+        CampoDeBusca.setPrompt("Buscar empréstimo");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(40, 93, 164));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Empréstimos ativos");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -97,19 +153,21 @@ public class TelaEmprestimos extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jXSearchField1, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(CampoDeBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
                 .addGap(94, 94, 94))
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addComponent(jLabel3)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                    .addComponent(jXSearchField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(CampoDeBusca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
         );
 
@@ -235,16 +293,17 @@ public class TelaEmprestimos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jdesktop.swingx.JXSearchField CampoDeBusca;
     private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPane2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private org.jdesktop.swingx.JXSearchField jXSearchField1;
     private javax.swing.JTable tabelaEmprestimos;
     // End of variables declaration//GEN-END:variables
 }
