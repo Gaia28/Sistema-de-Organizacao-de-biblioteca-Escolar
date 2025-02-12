@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class ConexaoSQLite {
     
    // String path = new File("SIGIB.db").getAbsolutePath();
-   private static final String URL = "jdbc:sqlite:Banco de Dados/SIGIB.db";
+   private static final String URL = "jdbc:sqlite:" + System.getProperty("user.dir") + "/SIGIB.db";
     //  private static final String URL = "jdbc:sqlite:";
 
     private static Connection connection;
