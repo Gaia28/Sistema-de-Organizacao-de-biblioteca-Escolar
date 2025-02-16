@@ -2,11 +2,14 @@ package View;
 
 import Controller.DAO;
 import Controller.EmprestimoDTO;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -24,50 +27,38 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         initComponents();
         carregarEmprestimosTabela();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icons/ebook.png")));      
+
         
         CampoDeBusca.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                buscarEmprestimos();
+                filtrarTabela();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                buscarEmprestimos();
+                filtrarTabela();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                buscarEmprestimos();
+                filtrarTabela();
             }
             
-           private void buscarEmprestimos() {
-    String busca = CampoDeBusca.getText(); // Obtendo o texto digitado pelo usuário
-    DAO dao = new DAO();
-    List<EmprestimoDTO> emprestimos;
-
-    if (busca.isEmpty()) {
-        emprestimos = dao.buscarEmprestimos(); // Busca todos os empréstimos
-    } else {
-        emprestimos = dao.pesquisarEmprestimosTabela(busca); // Agora filtra também por data
-    }
-
+        private void filtrarTabela() {
+    String textoBusca = CampoDeBusca.getText().trim().toLowerCase();
     DefaultTableModel modelo = (DefaultTableModel) tabelaEmprestimos.getModel();
-    modelo.setRowCount(0); // Limpa a tabela antes de inserir os novos dados
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+    tabelaEmprestimos.setRowSorter(sorter);
 
-    for (EmprestimoDTO emprestimo : emprestimos) {
-        modelo.addRow(new Object[]{
-            emprestimo.getId(),
-            emprestimo.getAlunoNome(),
-            emprestimo.getAlunoTurma(),
-            emprestimo.getLivroTitulo(),
-            emprestimo.getLivroISBN(),
-            emprestimo.getDataEmprestimo(),
-            emprestimo.getDataDevolucao(),
-            emprestimo.isDevolvido() ? "Sim" : "Não"
-        });
+    if (textoBusca.isEmpty()) {
+        sorter.setRowFilter(null); // Remove o filtro quando o campo estiver vazio
+    } else {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + textoBusca));
     }
 }
+
 
 
             
@@ -79,6 +70,10 @@ public class TelaEmprestimos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jDesktopPane2 = new javax.swing.JDesktopPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -91,9 +86,18 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem3.setText("jMenuItem3");
+
+        jMenuItem4.setText("jMenuItem4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de Gerenciamento Bibliotecário");
+        setTitle("Sistema de Gestão Bibliotecária");
 
         jDesktopPane2.setBackground(new java.awt.Color(63, 117, 189));
 
@@ -101,24 +105,27 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 1, true));
 
         tabelaEmprestimos.setBackground(new java.awt.Color(255, 255, 255));
+        tabelaEmprestimos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tabelaEmprestimos.setForeground(new java.awt.Color(51, 51, 51));
         tabelaEmprestimos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "Aluno", "Turma", "Titulo do livro", "ISBN", "Data de Empréstimo", "Data de Devolução", "Devolvido?"
+                "Aluno", "Turma", "Titulo do livro", "ISBN", "Data de Empréstimo", "Data de Devolução", "Devolvido?"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tabelaEmprestimos.setFocusable(false);
         tabelaEmprestimos.setGridColor(new java.awt.Color(51, 51, 51));
+        tabelaEmprestimos.setRowSelectionAllowed(false);
         tabelaEmprestimos.setShowGrid(true);
         jScrollPane1.setViewportView(tabelaEmprestimos);
 
@@ -137,6 +144,11 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         CampoDeBusca.setLayoutStyle(org.jdesktop.swingx.JXSearchField.LayoutStyle.MAC);
         CampoDeBusca.setMargin(new java.awt.Insets(2, 8, 2, 6));
         CampoDeBusca.setPrompt("Buscar empréstimo");
+        CampoDeBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CampoDeBuscaActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(40, 93, 164));
@@ -147,7 +159,8 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(96, 96, 96)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -156,18 +169,18 @@ public class TelaEmprestimos extends javax.swing.JFrame {
                         .addComponent(CampoDeBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
                 .addGap(94, 94, 94))
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
                 .addComponent(jLabel3)
-                .addGap(34, 34, 34)
+                .addGap(37, 37, 37)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                     .addComponent(CampoDeBusca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
                 .addGap(22, 22, 22))
         );
 
@@ -235,6 +248,15 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setForeground(new java.awt.Color(255, 255, 255));
+        jMenu2.setText("Histórico de emprestimos");
+        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu2MouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -261,8 +283,24 @@ public class TelaEmprestimos extends javax.swing.JFrame {
         TelaDevolucao telaDevolucao = new TelaDevolucao();
         jDesktopPane2.add(telaDevolucao);
         telaDevolucao.setVisible(true);
+        centralizarDevolucao(telaDevolucao, this);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
+        TelaEmprestimosAntigos telaEmprestimosAntigos = new TelaEmprestimosAntigos();
+        dispose();
+        telaEmprestimosAntigos.setVisible(true);
+    }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void CampoDeBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoDeBuscaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CampoDeBuscaActionPerformed
+
+    public void centralizarDevolucao(TelaDevolucao frame, TelaEmprestimos desktopPane) {
+        int x = (desktopPane.getWidth() - frame.getWidth()) / 2;
+        int y = (desktopPane.getHeight() - frame.getHeight()) / 2;
+        frame.setLocation(x, y);
+    }
     public  void carregarEmprestimosTabela(){
         DAO dao  = new DAO();
         List<EmprestimoDTO> emprestimos = dao.buscarEmprestimos();
@@ -271,7 +309,6 @@ public class TelaEmprestimos extends javax.swing.JFrame {
     
         for (EmprestimoDTO emprestimo : emprestimos) {
             modelo.addRow(new Object[]{
-            emprestimo.getId(),
             emprestimo.getAlunoNome(),
             emprestimo.getAlunoTurma(),
             emprestimo.getLivroTitulo(),
@@ -300,7 +337,12 @@ public class TelaEmprestimos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -47,12 +47,15 @@ public class TelaDeEdicao extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(224, 238, 248));
 
         TxfIsbn.setBackground(new java.awt.Color(255, 255, 255));
+        TxfIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TxfIsbn.setForeground(new java.awt.Color(51, 51, 51));
 
         TxfTitulo.setBackground(new java.awt.Color(255, 255, 255));
+        TxfTitulo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TxfTitulo.setForeground(new java.awt.Color(51, 51, 51));
 
         TxfAutor.setBackground(new java.awt.Color(255, 255, 255));
+        TxfAutor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TxfAutor.setForeground(new java.awt.Color(51, 51, 51));
         TxfAutor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

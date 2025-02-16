@@ -115,6 +115,8 @@ public class TelaDeExclusao extends javax.swing.JInternalFrame {
             DAO dao = new DAO();
             
             dao.ExcluirLivro(isbn);
+            textFieldisbn.setText("");
+            
         }
        
         

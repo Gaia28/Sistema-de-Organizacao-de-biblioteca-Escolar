@@ -5,6 +5,7 @@ import Controller.DAO;
 import Model.Alunos;
 import Model.Emprestimos;
 import Model.Livros;
+import java.awt.Toolkit;
 import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -15,6 +16,8 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
     public TelaCadastroEmprestimos() {
         initComponents();
          setExtendedState(JFrame.MAXIMIZED_BOTH);
+          setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icons/ebook.png")));      
+
     }
 
    
@@ -43,7 +46,7 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         menuVoltar = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de Gerenciamento Bibliotecário");
+        setTitle("Sistema de Gestão Bibliotecária");
 
         jPanel1.setBackground(new java.awt.Color(63, 117, 189));
 
@@ -75,10 +78,13 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
         jLabel4.setText("ISBN");
 
         calendarioInicial.setForeground(new java.awt.Color(51, 51, 51));
+        calendarioInicial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Data de empréstimo");
+
+        calendarioFinal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
@@ -204,7 +210,7 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(79, 79, 79)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(103, 103, 103))
+                .addGap(81, 81, 81))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,17 +304,15 @@ public class TelaCadastroEmprestimos extends javax.swing.JFrame {
            boolean livroEmprestado = dao.VerificarEmprestimo(ISBN);
            //se o aluno não tiver emprestimos
            if(emprestimoAtivo == false){
-               JOptionPane.showMessageDialog(null, "aluno não possui emprestimos");
                
                //livro cadastrado no acervo
                if(livroCadastrado == true){
-                JOptionPane.showMessageDialog(null, "livro cadastrado");
-                
+
                 Emprestimos emprestimo = new Emprestimos(alunoID, ISBN, dataEmprestimo, dataEntrega, false);
 
                 //livro sem emprestimos registrado
                 if(livroEmprestado == false){
-                    JOptionPane.showMessageDialog(null, "livro não está emprestado");
+                   
                     dao.CadastrarEmprestimo(emprestimo);
                     LimparCamposTexto();
                     

@@ -3,11 +3,14 @@ package View;
 
 import Controller.DAO;
 import Model.Livros;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 public class TelaDeAcervo extends javax.swing.JFrame {
@@ -18,48 +21,38 @@ public class TelaDeAcervo extends javax.swing.JFrame {
         initComponents();
         InserirLivrosTabela();
          setExtendedState(JFrame.MAXIMIZED_BOTH);
+          setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icons/ebook.png")));      
+
         
         campoDeBusca.getDocument().addDocumentListener(new DocumentListener() {
     @Override
     public void insertUpdate(DocumentEvent e) {
-        buscarLivros();
+        filtrarTabelaLivros();
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        buscarLivros();
+        filtrarTabelaLivros();
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        buscarLivros();
+        filtrarTabelaLivros();
     }
 
-    private void buscarLivros() {
-        String tituloBusca = campoDeBusca.getText(); // Pegando o texto atualizado
-        DAO dao = new DAO();
-        List<Livros> livros;
+   private void filtrarTabelaLivros() {
+    String textoBusca = campoDeBusca.getText().trim().toLowerCase();
+    DefaultTableModel modelo = (DefaultTableModel) tabelaAcervo.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+    tabelaAcervo.setRowSorter(sorter);
 
-        if (tituloBusca.isEmpty()) {
-            livros = dao.BuscarLivros();
-        } else {
-            livros = dao.PesquisarLivrosPorTitulo(tituloBusca);
-        }
-
-        DefaultTableModel modelo = (DefaultTableModel) tabelaAcervo.getModel();
-        modelo.setRowCount(0);
-
-        for (Livros livro : livros) {
-            modelo.addRow(new Object[] {
-                livro.getISBN(),
-                livro.getTitulo(),
-                livro.getAutor(),
-                livro.getGenero(),
-                livro.isDisponivel() ? "Sim" : "Não"
-            });
-        }
-
+    if (textoBusca.isEmpty()) {
+        sorter.setRowFilter(null); // Remove o filtro quando o campo estiver vazio
+    } else {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + textoBusca));
     }
+}
+
 });
 
     }
@@ -85,7 +78,7 @@ public class TelaDeAcervo extends javax.swing.JFrame {
         menuVoltar = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de Gerenciamento Bibliotecário");
+        setTitle("Sistema de Gestão Bibliotecária");
 
         jDesktopPane1.setBackground(new java.awt.Color(63, 117, 189));
 
@@ -214,15 +207,16 @@ public class TelaDeAcervo extends javax.swing.JFrame {
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(campoDeBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addGap(17, 17, 17))
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(13, 13, 13)
                 .addComponent(jLabel6)
-                .addGap(25, 25, 25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(campoDeBusca, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

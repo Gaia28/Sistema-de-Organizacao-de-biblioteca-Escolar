@@ -3,6 +3,7 @@ package View;
 
 import Controller.DAO;
 import Model.Livros;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,6 +19,8 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         
         initComponents();
          setExtendedState(JFrame.MAXIMIZED_BOTH);
+          setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icons/ebook.png")));      
+
     }
 
   
@@ -44,7 +47,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         menuVoltar = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de Gerenciamento Bibliotecário");
+        setTitle("Sistema de Gestão Bibliotecária");
 
         jPanel1.setBackground(new java.awt.Color(63, 117, 189));
 
@@ -53,7 +56,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         jPanel2.setForeground(new java.awt.Color(51, 51, 51));
 
         textFieldISBN.setBackground(new java.awt.Color(255, 255, 255));
-        textFieldISBN.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        textFieldISBN.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textFieldISBN.setForeground(new java.awt.Color(51, 51, 51));
         textFieldISBN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,7 +65,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         });
 
         textFieldGenero.setBackground(new java.awt.Color(255, 255, 255));
-        textFieldGenero.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        textFieldGenero.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textFieldGenero.setForeground(new java.awt.Color(51, 51, 51));
         textFieldGenero.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,11 +74,11 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         });
 
         textFieldNome.setBackground(new java.awt.Color(255, 255, 255));
-        textFieldNome.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        textFieldNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textFieldNome.setForeground(new java.awt.Color(51, 51, 51));
 
         textFieldAutor.setBackground(new java.awt.Color(255, 255, 255));
-        textFieldAutor.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        textFieldAutor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         textFieldAutor.setForeground(new java.awt.Color(51, 51, 51));
         textFieldAutor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,8 +145,9 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel7)
-                .addGap(11, 11, 11)
+                .addGap(5, 5, 5)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(textFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -203,7 +207,7 @@ public class TelaCadastroLivros extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(89, 89, 89)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(124, 124, 124))
+                .addGap(105, 105, 105))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

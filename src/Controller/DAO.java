@@ -12,8 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import java.util.List;
+import java.util.Map;
 
 
 public class DAO {
@@ -519,6 +521,38 @@ public List<EmprestimoDTO> pesquisarEmprestimosTabela(String pesquisa) {
         ConexaoSQLite.getInstance().fecharConexao();
     }
     
+    return listaEmprestimos;
+}
+public List<Map<String, String>> buscarEmprestimosAntigos() {
+    List<Map<String, String>> listaEmprestimos = new ArrayList<>();
+    String sql = "SELECT h.id, a.nome AS nomeAluno, a.turma, " +
+                 "l.titulo AS tituloLivro, l.autor AS autorLivro, " +
+                 "h.dataEmprestimo, h.dataDevolucao " +
+                 "FROM HistoricoEmprestimos h " +
+                 "JOIN Alunos a ON h.alunoId = a.aluno_id " +
+                 "JOIN Livros l ON h.livroISBN = l.ISBN";
+
+    try (Connection conn = ConexaoSQLite.getInstance().abrirConexao();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+        while (rs.next()) {
+            Map<String, String> emprestimo = new HashMap<>();
+            emprestimo.put("id", String.valueOf(rs.getInt("id")));
+            emprestimo.put("nomeAluno", rs.getString("nomeAluno"));
+            emprestimo.put("turma", rs.getString("turma"));
+            emprestimo.put("tituloLivro", rs.getString("tituloLivro"));
+            emprestimo.put("autorLivro", rs.getString("autorLivro"));
+            emprestimo.put("dataEmprestimo", rs.getString("dataEmprestimo"));
+            emprestimo.put("dataDevolucao", rs.getString("dataDevolucao"));
+
+            listaEmprestimos.add(emprestimo);
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Erro ao buscar empréstimos antigos: " + e.getMessage());
+    }
+
     return listaEmprestimos;
 }
 

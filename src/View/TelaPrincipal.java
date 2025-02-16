@@ -3,6 +3,7 @@ package View;
 
 import Controller.DAO;
 import Model.Livros;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,7 +17,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
        public TelaPrincipal() {
         initComponents();
          setExtendedState(JFrame.MAXIMIZED_BOTH);
-      
+ setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Icons/ebook.png")));      
     }
 
    
@@ -35,7 +36,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Sistema de Gerenciamento Bibliotecário");
+        setTitle("Sistema de Gestão Bibliotecária");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setIconImages(null);
 
@@ -172,9 +173,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jDesktopPane1)
-                .addGap(0, 0, 0))
+            .addComponent(jDesktopPane1)
         );
 
         pack();

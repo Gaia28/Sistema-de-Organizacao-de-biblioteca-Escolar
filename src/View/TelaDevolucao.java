@@ -57,12 +57,14 @@ public class TelaDevolucao extends javax.swing.JInternalFrame {
         jLabel2.setText("Nome do aluno");
 
         TxfNome.setBackground(new java.awt.Color(255, 255, 255));
+        TxfNome.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Turma do aluno");
 
         TxfTurma.setBackground(new java.awt.Color(255, 255, 255));
+        TxfTurma.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TxfTurma.setForeground(new java.awt.Color(51, 51, 51));
         TxfTurma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,6 +77,7 @@ public class TelaDevolucao extends javax.swing.JInternalFrame {
         jLabel4.setText("ISBN do livro");
 
         TxfIsbn.setBackground(new java.awt.Color(255, 255, 255));
+        TxfIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         TxfIsbn.setForeground(new java.awt.Color(51, 51, 51));
 
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
@@ -158,6 +161,10 @@ public class TelaDevolucao extends javax.swing.JInternalFrame {
         }else{
         DAO dao = new DAO();
         dao.RegistrarDevolucao(nome, turma, isbn);}
+        
+        TxfNome.setText("");
+        TxfTurma.setText("");
+        TxfIsbn.setText("");
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
