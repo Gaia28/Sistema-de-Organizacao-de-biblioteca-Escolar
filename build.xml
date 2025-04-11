@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SIGB" default="default" basedir=".">
+    <description>Builds, tests, and runs the project SIGB.</description>
+
+    <!-- Importa as configurações padrão do NetBeans -->
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Definição dos diretórios -->
+    <property name="dist.dir" value="dist"/>
+    <property name="dist.jar" value="${dist.dir}/SIGB.jar"/>
+
+    <!-- Criar o Manifest antes de empacotar o JAR -->
+    <target name="-pre-jar">
+        <mkdir dir="${dist.dir}"/>
+        <echo file="${dist.dir}/manifest.mf">
+Manifest-Version: 1.0
+Main-Class: View.TelaPrincipal
+Class-Path: lib/sqlite-jdbc-3.46.0.0.jar lib/swingx-all-1.6.4.jar lib/slf4j-api-2.0.13.jar lib/slf4j-nop-2.0.13.jar
+        </echo>
+    </target>
+
+    <!-- Criar o JAR com o Manifest correto -->
+    <target name="-post-jar">
+        <mkdir dir="${dist.dir}/lib"/>
+
+        <!-- Copiar dependências (SQLite, SwingX) para a pasta lib -->
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="lib" includes="sqlite-jdbc-3.46.0.0.jar,swingx-all-1.6.4.jar, slf4j-nop-2.0.13.jar,slf4j-api-2.0.13.jar "/>
+        </copy>
+
+        <!-- Atualizar o Manifest dentro do JAR -->
+        <jar update="true" destfile="${dist.jar}">
+            <manifest>
+                <attribute name="Main-Class" value="View.TelaPrincipal"/>
+                <attribute name="Class-Path" value="lib/sqlite-jdbc-3.46.0.0.jar lib/swingx-all-1.6.4.jar  lib/slf4j-api-2.0.13.jar lib/slf4j-nop-2.0.13.jar"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
+
