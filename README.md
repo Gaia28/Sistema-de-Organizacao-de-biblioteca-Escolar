@@ -36,7 +36,7 @@ Empréstimos Ativos
 Registrar Empréstimo
 ![emprestimo](https://github.com/user-attachments/assets/efb88d81-3373-476c-b25c-6afedd34c46a)
 
-🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 Java 23 (JDK mais recente)
 
